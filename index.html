@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BharatAkshar - Indian Script Transliterator</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+
+    <!-- Load THREE.js first (required by Vanta) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <!-- Then load Vanta -->
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@indic-transliteration/sanscript"></script>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/animations.css" rel="stylesheet">
+
+    <style>
+        /* Ensure the globe container has proper dimensions */
+        #vanta-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Ensure content appears above the globe */
+        .relative.z-10 {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="gradient-bg min-h-screen">
+    <div id="vanta-bg" class="absolute top-0 left-0 w-full h-full z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="relative z-10 bg-white bg-opacity-90 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i data-feather="globe" class="h-8 w-8 text-orange-500"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-800">BharatAkshar</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-900 nav-active">Home</a>
+                        <a href="transliterate.html"
+                            class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">Transliterate</a>
+                        <a href="#about"
+                            class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">About</a>
+                        <a href="contact.html"
+                            class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, hidden by default -->
+        <div id="mobile-menu" class="mobile-menu-hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 bg-gray-100">Home</a>
+                <a href="transliterate.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">Transliterate</a>
+                <a href="#about"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">About</a>
+                <a href="contact.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left" data-aos="fade-right">
+                    <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                        <span class="block">Read Any</span>
+                        <span class="block gradient-text">Indian Script Instantly</span>
+                    </h1>
+                    <p
+                        class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                        Type or capture text and transliterate it into your preferred script with our powerful tool.
+                    </p>
+                    <div class="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
+                        <a href="transliterate.html"
+                            class="btn-gradient text-white px-8 py-3 rounded-md text-lg font-medium inline-flex items-center">
+                            Start Transliteration
+                            <i data-feather="arrow-right" class="ml-2"></i>
+                        </a>
+                        <a href="transliterate.html#ocr-section"
+                            class="ml-4 px-4 py-3 border border-gray-300 rounded-md text-lg font-medium inline-flex items-center hover:bg-gray-50">
+                            <i data-feather="image" class="mr-2"></i> Try OCR
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center"
+                    data-aos="fade-left">
+                    <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+                        <div class="bg-white rounded-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-medium text-gray-900">Try it out</h3>
+                                <span class="px-2 py-1 text-xs rounded-full bg-orange-100 text-orange-800">Demo</span>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Source Script</label>
+                                    <select id="demo-source-script"
+                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
+                                        <option value="devanagari">Hindi (Devanagari)</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Target Script</label>
+                                    <select id="demo-target-script"
+                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
+                                        <option value="itrans">English (Latin)</option>
+                                        <option value="devanagari">Hindi (Devanagari)</option>
+                                        <option value="kannada">Kannada</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Input Text</label>
+                                    <textarea id="demo-input-text" rows="3"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                        placeholder="Type here..."></textarea>
+                                </div>
+                                <button id="demo-transliterate-btn"
+                                    class="btn-gradient w-full text-white py-2 px-4 rounded-md text-sm font-medium">
+                                    Transliterate
+                                </button>
+                                <div id="demo-output" class="hidden mt-2 p-3 bg-gray-50 rounded-md">
+                                    <p class="text-gray-800"></p>
+                                    <div class="mt-2 flex justify-end space-x-2">
+                                        <button id="demo-copy-btn"
+                                            class="text-xs text-orange-600 hover:text-orange-800">
+                                            <i data-feather="copy" class="w-3 h-3 inline mr-1"></i> Copy
+                                        </button>
+                                        <button id="demo-speak-btn"
+                                            class="text-xs text-orange-600 hover:text-orange-800">
+                                            <i data-feather="volume-2" class="w-3 h-3 inline mr-1"></i> Speak
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts Showcase -->
+    <section class="relative z-10 py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center" data-aos="fade-up">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Supported Indian Scripts
+                </h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+                    We support all major Indian scripts for seamless transliteration
+                </p>
+            </div>
+            <div class="mt-12 grid gap-5 max-w-lg mx-auto lg:grid-cols-3 lg:max-w-none">
+                <div class="script-card flex flex-col rounded-lg shadow-lg overflow-hidden bg-white" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <div class="flex-1 p-6 flex flex-col justify-between">
+                        <div class="flex-1">
+                            <div
+                                class="flex items-center justify-center h-12 w-12 rounded-md bg-orange-100 text-orange-600 mb-4">
+                                <i data-feather="type" class="h-6 w-6"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 text-center">Devanagari</h3>
+                            <p class="mt-3 text-base text-gray-500 text-center">
+                                Used for Hindi, Marathi, Sanskrit and other languages
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="script-card flex flex-col rounded-lg shadow-lg overflow-hidden bg-white" data-aos="fade-up"
+                    data-aos-delay="200">
+                    <div class="flex-1 p-6 flex flex-col justify-between">
+                        <div class="flex-1">
+                            <div
+                                class="flex items-center justify-center h-12 w-12 rounded-md bg-teal-100 text-teal-600 mb-4">
+                                <i data-feather="edit" class="h-6 w-6"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 text-center">Bengali</h3>
+                            <p class="mt-3 text-base text-gray-500 text-center">
+                                Used for Bengali, Assamese and other Eastern languages
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="script-card flex flex-col rounded-lg shadow-lg overflow-hidden bg-white" data-aos="fade-up"
+                    data-aos-delay="300">
+                    <div class="flex-1 p-6 flex flex-col justify-between">
+                        <div class="flex-1">
+                            <div
+                                class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600 mb-4">
+                                <i data-feather="file-text" class="h-6 w-6"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 text-center">Tamil</h3>
+                            <p class="mt-3 text-base text-gray-500 text-center">
+                                Used for Tamil language with its unique script
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <a href="transliterate.html" class="text-orange-600 hover:text-orange-800 inline-flex items-center">
+                    See all supported scripts
+                    <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="relative z-10 py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center" data-aos="fade-up">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Powerful Features
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Everything you need for seamless script transliteration
+                </p>
+            </div>
+            <div class="mt-10">
+                <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+                    <div class="flex" data-aos="fade-up" data-aos-delay="100">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
+                                <i data-feather="type"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Text Input</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Simply type or paste your text in any Indian script for instant transliteration.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex" data-aos="fade-up" data-aos-delay="200">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-teal-500 text-white">
+                                <i data-feather="image"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Image OCR</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Upload images with text and our OCR will extract and transliterate it for you.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex" data-aos="fade-up" data-aos-delay="300">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <i data-feather="volume-2"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Speech Output</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Listen to the transliterated text with our text-to-speech functionality.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex" data-aos="fade-up" data-aos-delay="400">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                                <i data-feather="copy"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Copy & Share</h3>
+                            <p class="mt-2 text-base text-gray-500">
+                                Easily copy the results or share them directly with others.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative z-10 bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-orange-500 to-teal-500 rounded-lg shadow-xl overflow-hidden">
+                <div class="px-6 py-8 sm:p-10 sm:pb-6">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-extrabold text-white sm:text-4xl" data-aos="fade-up">
+                            Ready to explore Indian scripts?
+                        </h2>
+                        <p class="mt-4 text-lg leading-6 text-orange-100" data-aos="fade-up" data-aos-delay="100">
+                            Start transliterating text between Indian scripts instantly.
+                        </p>
+                    </div>
+                    <div class="mt-10 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+                        <a href="transliterate.html"
+                            class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                            Get Started
+                            <i data-feather="arrow-right" class="ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative z-10 py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center" data-aos="fade-up">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    About <span class="gradient-text">BharatAkshar</span>
+                </h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+                    Making Indian scripts accessible through technology
+                </p>
+            </div>
+
+            <div class="mt-12 grid gap-8 md:grid-cols-2" data-aos="fade-up" data-aos-delay="100">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Our Mission</h3>
+                    <p class="text-gray-500">
+                        BharatAkshar is dedicated to breaking down language barriers by providing accurate and
+                        accessible transliteration tools for all major Indian scripts. Our mission is to make
+                        Indian languages more accessible to everyone, regardless of their linguistic background.
+                    </p>
+                    <p class="text-gray-500 mt-4">
+                        We believe that language should never be a barrier to communication, education, or
+                        cultural exchange. Our tools are designed to help travelers, students, researchers,
+                        and anyone interested in Indian languages and scripts.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Technology</h3>
+                    <p class="text-gray-500">
+                        Our platform uses advanced algorithms and machine learning techniques to provide
+                        accurate transliteration between scripts. We've incorporated the Sanscript library
+                        for precise script conversion and Tesseract.js for OCR capabilities.
+                    </p>
+                    <div class="mt-6 flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
+                                <i data-feather="code"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-md font-medium text-gray-900">Open Source</h4>
+                            <p class="text-sm text-gray-500">
+                                We believe in open collaboration and transparency.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Supported Scripts</h3>
+                <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Devanagari</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Bengali</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Tamil</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Telugu</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Kannada</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Malayalam</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Gujarati</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-feather="check" class="h-5 w-5 text-green-500"></i>
+                        <span class="ml-2 text-gray-700">Gurmukhi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 bg-gray-800 mt-12">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                <div class="space-y-8 xl:col-span-1">
+                    <div class="flex items-center">
+                        <i data-feather="globe" class="h-8 w-8 text-orange-500"></i>
+                        <span class="ml-2 text-xl font-bold text-white">BharatAkshar</span>
+                    </div>
+                    <p class="text-gray-300 text-base">
+                        Making Indian scripts accessible to everyone through technology.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="github"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i data-feather="twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Product</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="transliterate.html"
+                                        class="text-base text-gray-300 hover:text-white">Transliterate</a>
+                                </li>
+                                <li>
+                                    <a href="transliterate.html#ocr-section"
+                                        class="text-base text-gray-300 hover:text-white">OCR</a>
+                                </li>
+                                <li>
+                                    <a href="transliterate.html"
+                                        class="text-base text-gray-300 hover:text-white">Text-to-Speech</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-12 md:mt-0">
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#about" class="text-base text-gray-300 hover:text-white">About</a>
+                                </li>
+                                <li>
+                                    <a href="contact.html" class="text-base text-gray-300 hover:text-white">Contact</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">Careers</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Technology</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <span class="text-base text-gray-400">Sanscript.js</span>
+                                </li>
+                                <li>
+                                    <span class="text-base text-gray-400">Tesseract.js</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 xl:text-center">&copy; 2025 BharatAkshar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+    <script>
+        // Vanta.js Globe Background
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof VANTA !== 'undefined') {
+                VANTA.GLOBE({
+                    el: "#vanta-bg",
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: 0xf97316,
+                    backgroundColor: 0xf9fafb,
+                    size: 0.8
+                });
+            }
+        });
+    </script>
+
+    <!-- Footer content... -->
+
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+
+    <script>
+        // Simple Vanta initialization
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof VANTA !== 'undefined') {
+                VANTA.GLOBE({
+                    el: "#vanta-bg",
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: 0xf97316,
+                    backgroundColor: 0xf9fafb,
+                    size: 0.8
+                });
+            } else {
+                console.log('VANTA not loaded yet, retrying...');
+                // Retry after a short delay
+                setTimeout(function () {
+                    if (typeof VANTA !== 'undefined') {
+                        VANTA.GLOBE({
+                            el: "#vanta-bg",
+                            mouseControls: true,
+                            touchControls: true,
+                            gyroControls: false,
+                            minHeight: 200.00,
+                            minWidth: 200.00,
+                            scale: 1.00,
+                            scaleMobile: 1.00,
+                            color: 0xf97316,
+                            backgroundColor: 0xf9fafb,
+                            size: 0.8
+                        });
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

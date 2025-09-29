@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+out/
+
+# IDEs
+.vscode/
+.idea/
+
+# Local history (like from VS Code or extensions)
+.history/
+
+# Lighthouse or other temp folders
+.lh/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Browser cache
+.cache/
