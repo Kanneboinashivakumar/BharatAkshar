@@ -1,0 +1,25 @@
+{
+  "name": "bharatakshar",
+  "version": "1.0.0",
+  "description": "BharatAkshar is a web application designed to transliterate text between Indian scripts. Users can either point their phone camera at a street sign or upload a photo, and the app will recognize the text using Optical Character Recognition (OCR). The script is automatically detected, and the text is converted into the user's preferred script without altering meaning or pronunciation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kanneboinashivakumar/BharatAkshar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kanneboinashivakumar/BharatAkshar/issues"
+  },
+  "homepage": "https://github.com/Kanneboinashivakumar/BharatAkshar#readme",
+  "dependencies": {
+    "@google-cloud/vision": "^5.3.3",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}

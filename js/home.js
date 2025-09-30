@@ -54,7 +54,7 @@ class BharatAksharHome {
             let result = Sanscript.t(inputText, sourceScript, targetScript);
 
             if (targetScript === 'itrans') {
-                result = window.bharatAksharCommon.capitalizeEnglishSentence(result);
+                result = this.capitalizeEnglishSentence(result);
             }
 
             outputText.textContent = result;
@@ -68,7 +68,37 @@ class BharatAksharHome {
         }
     }
 
+    capitalizeEnglishSentence(text) {
+        if (!text) return text;
+
+        const sentences = text.split(/([.!?]+)/);
+        let result = '';
+
+        for (let i = 0; i < sentences.length; i++) {
+            if (i % 2 === 0) {
+                let sentence = sentences[i].trim();
+                if (sentence.length > 0) {
+                    sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1).toLowerCase();
+                }
+                result += sentence;
+            } else {
+                result += sentences[i];
+            }
+
+            if (i < sentences.length - 1 && sentences[i].length > 0) {
+                result += ' ';
+            }
+        }
+
+        return result.trim();
+    }
+
     demoCopyText() {
+        if (!window.bharatAksharCommon) {
+            console.error('Common utilities not loaded');
+            return;
+        }
+
         const outputText = document.getElementById('demo-output').querySelector('p').textContent;
         navigator.clipboard.writeText(outputText).then(() => {
             window.bharatAksharCommon.showTemporaryFeedback('demo-copy-btn', '<i data-feather="check" class="w-3 h-3 inline mr-1"></i> Copied!');

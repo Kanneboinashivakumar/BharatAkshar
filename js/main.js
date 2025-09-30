@@ -73,8 +73,12 @@ class BharatAksharCommon {
 
     loadVoices() {
         if ('speechSynthesis' in window) {
+            // Force voice loading by calling getVoices
+            speechSynthesis.getVoices();
+
+            // Set up listener for when voices are loaded
             speechSynthesis.onvoiceschanged = () => {
-                // Voices are loaded and ready to use
+                console.log('Voices loaded:', speechSynthesis.getVoices().length);
             };
         }
     }
@@ -123,6 +127,8 @@ class BharatAksharCommon {
 
     showTemporaryFeedback(buttonId, feedbackText) {
         const button = document.getElementById(buttonId);
+        if (!button) return;
+
         const originalText = button.innerHTML;
 
         button.innerHTML = feedbackText;
