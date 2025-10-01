@@ -74,13 +74,13 @@ Traveling to another state in India can make reading local boards challenging du
 ## **Demo & Screenshots**
 
 ### Web Prototype
-(screenshots/demo1.png)
+![Demo 1](screenshots/demo1.png)
 
-(screenshots/demo2.png)
+![Demo 2](screenshots/demo2.png)
 
-(screenshots/demo3.png)
+![Demo 3](screenshots/demo3.png)
 
-(screenshots/demo4.png)
+![Demo 4](screenshots/demo4.png)
 
 ### Camera Functionality (in progress)
 ![text-to-speech](screenshots/text2speech.png)
