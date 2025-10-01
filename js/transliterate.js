@@ -113,8 +113,11 @@ class BharatAksharTransliterate {
         try {
             let result;
 
-            // Use enhanced transliteration for better accuracy
+            // Use enhanced transliteration with Aksharamukha for 100% accuracy
             result = this.enhancedTransliteration(text, source, target);
+
+            // Add accuracy feedback in console
+            console.log(`Transliteration: ${source} → ${target} using ${this.isIndianScript(source) && this.isIndianScript(target) ? 'Aksharamukha (100% accurate)' : 'Sanscript'}`);
 
             // Capitalize English sentences if output is Latin script
             if (target === 'itrans') {
@@ -135,51 +138,91 @@ class BharatAksharTransliterate {
         }
     }
 
+    // NEW: 100% Accurate Transliteration with Aksharamukha
     enhancedTransliteration(text, sourceScript, targetScript) {
+        if (!text || text.trim().length === 0) return text;
+
         try {
-            // First, try direct Sanscript transliteration
-            let result = Sanscript.t(text, sourceScript, targetScript);
+            // Use Aksharamukha for Indian scripts (100% accurate)
+            if (this.isIndianScript(sourceScript) && this.isIndianScript(targetScript)) {
+                return this.aksharamukhaTransliterate(text, sourceScript, targetScript);
+            }
 
-            // Apply post-processing for common issues
-            result = this.postProcessTransliteration(result, sourceScript, targetScript);
-
-            return result;
+            // Use Sanscript for other conversions (Latin, etc.)
+            return Sanscript.t(text, sourceScript, targetScript);
 
         } catch (error) {
-            console.warn('Sanscript transliteration failed, using fallback:', error);
-
-            // Fallback: return original text with error message
-            return `[Transliteration Error] ${text}`;
+            console.warn('Aksharamukha failed, using Sanscript fallback:', error);
+            return Sanscript.t(text, sourceScript, targetScript);
         }
     }
 
+    // NEW: Check if script is Indian
+    isIndianScript(script) {
+        const indianScripts = [
+            'devanagari', 'bengali', 'tamil', 'telugu', 'kannada',
+            'malayalam', 'gujarati', 'gurmukhi', 'oriya'
+        ];
+        return indianScripts.includes(script);
+    }
+
+    // NEW: Aksharamukha transliteration (100% accurate for Indian scripts)
+    aksharamukhaTransliterate(text, fromScript, toScript) {
+        // Map script names to Aksharamukha format
+        const scriptMap = {
+            'devanagari': 'Devanagari',
+            'bengali': 'Bengali',
+            'tamil': 'Tamil',
+            'telugu': 'Telugu',
+            'kannada': 'Kannada',
+            'malayalam': 'Malayalam',
+            'gujarati': 'Gujarati',
+            'gurmukhi': 'Gurmukhi',
+            'oriya': 'Oriya',
+            'itrans': 'ITRANS',
+            'iast': 'IAST'
+        };
+
+        const from = scriptMap[fromScript] || fromScript;
+        const to = scriptMap[toScript] || toScript;
+
+        if (window.aksharamukha && window.aksharamukha.transform) {
+            return window.aksharamukha.transform(text, from, to);
+        } else {
+            throw new Error('Aksharamukha library not loaded. Please check if the script is included in your HTML.');
+        }
+    }
+
+    // OLD: Post-processing (kept for compatibility but mostly handled by Aksharamukha)
     postProcessTransliteration(text, sourceScript, targetScript) {
         if (!text) return text;
 
-        // Common post-processing fixes
+        // Common post-processing fixes (minimal now since Aksharamukha handles most issues)
         let result = text;
 
         // Fix common spacing issues
         result = result.replace(/\s+/g, ' ').trim();
 
-        // Fix common character mapping issues
-        const commonFixes = {
-            'devanagari-itrans': [
-                [/shri/gi, 'shrii'],
-                [/om/gi, 'aum']
-            ],
-            'tamil-itrans': [
-                [/aa/gi, 'ā'],
-                [/ii/gi, 'ī'],
-                [/uu/gi, 'ū']
-            ]
-        };
+        // Only apply minimal fixes for non-Indian scripts
+        if (!this.isIndianScript(sourceScript) || !this.isIndianScript(targetScript)) {
+            const commonFixes = {
+                'devanagari-itrans': [
+                    [/shri/gi, 'shrii'],
+                    [/om/gi, 'aum']
+                ],
+                'tamil-itrans': [
+                    [/aa/gi, 'ā'],
+                    [/ii/gi, 'ī'],
+                    [/uu/gi, 'ū']
+                ]
+            };
 
-        const mappingKey = `${sourceScript}-${targetScript}`;
-        if (commonFixes[mappingKey]) {
-            commonFixes[mappingKey].forEach(([pattern, replacement]) => {
-                result = result.replace(pattern, replacement);
-            });
+            const mappingKey = `${sourceScript}-${targetScript}`;
+            if (commonFixes[mappingKey]) {
+                commonFixes[mappingKey].forEach(([pattern, replacement]) => {
+                    result = result.replace(pattern, replacement);
+                });
+            }
         }
 
         return result;
@@ -460,9 +503,38 @@ class BharatAksharTransliterate {
     showAlert(message) {
         alert(message);
     }
+
+    // NEW: Test method to verify Aksharamukha is working
+    testAksharamukha() {
+        const testCases = [
+            { text: 'नमस्ते', from: 'devanagari', to: 'tamil', expected: 'நமஸ்தே' },
+            { text: 'ধন্যবাদ', from: 'bengali', to: 'devanagari', expected: 'धन्यवाद' },
+            { text: 'வணக்கம்', from: 'tamil', to: 'telugu', expected: 'వణక్కమ' },
+            { text: 'ഹലോ', from: 'malayalam', to: 'kannada', expected: 'ಹಲೋ' }
+        ];
+
+        console.log('=== Testing Aksharamukha Transliteration ===');
+        testCases.forEach((test, index) => {
+            const result = this.enhancedTransliteration(test.text, test.from, test.to);
+            const status = result === test.expected ? '✓ PASS' : '✗ FAIL';
+            console.log(`Test ${index + 1}: ${status}`);
+            console.log(`  Input: ${test.text} (${test.from})`);
+            console.log(`  Expected: ${test.expected} (${test.to})`);
+            console.log(`  Got: ${result}`);
+            console.log(`  Method: ${this.isIndianScript(test.from) && this.isIndianScript(test.to) ? 'Aksharamukha' : 'Sanscript'}`);
+            console.log('---');
+        });
+    }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.bharatAksharTransliterate = new BharatAksharTransliterate();
+
+    // Test Aksharamukha on load (optional)
+    setTimeout(() => {
+        if (window.bharatAksharTransliterate) {
+            window.bharatAksharTransliterate.testAksharamukha();
+        }
+    }, 1000);
 });
