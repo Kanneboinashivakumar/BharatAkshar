@@ -8,7 +8,7 @@ This ensures that names of places and other text look different in writing but s
 
 ## **Problem It Solves**
 
-Traveling to another state in India can make reading local boards challenging due to unfamiliar scripts. BharatScript addresses this problem by:
+Traveling to another state in India can make reading local boards challenging due to unfamiliar scripts. BharatAkshar addresses this problem by:
 
 - Displaying text in a script the user already knows.
 - Saving time and reducing stress when understanding unknown scripts.
@@ -19,7 +19,7 @@ Traveling to another state in India can make reading local boards challenging du
 
 ## **Innovation & Uniqueness**
 
-- Unlike translation apps, BharatScript keeps the original meaning and pronunciation intact by only changing the script.
+- Unlike translation apps, BharatAkshar keeps the original meaning and pronunciation intact by only changing the script.
 - Supports multiple Indian scripts in a single app — a rare feature.
 - Real-time conversion using a phone camera (camera functionality in progress).
 - Works on both web and mobile platforms.
@@ -67,6 +67,25 @@ Traveling to another state in India can make reading local boards challenging du
 - Integrate camera functionality for real-time transliteration of street signs.
 - Expand support for additional Indian scripts and languages.
 - Improve UI/UX for better mobile responsiveness.
+- Enhance OCR accuracy, transliteration quality, and text-to-speech pronunciation.
+
+---
+
+## **Demo & Screenshots**
+
+### Web Prototype
+(screenshots/demo1.png)
+
+(screenshots/demo2.png)
+
+(screenshots/demo3.png)
+
+(screenshots/demo4.png)
+
+### Camera Functionality (in progress)
+![text-to-speech](screenshots/text2speech.png)
+
+![Camera OCR](screenshots/imageocr.png)
 
 ---
 
@@ -74,21 +93,56 @@ Traveling to another state in India can make reading local boards challenging du
 
 The project is deployed using GitHub Pages:
 
-👉 [BharatScript Live Demo](#)  
+👉 [BharatAkshar Live Demo](https://kanneboinashivakumar.github.io/BharatAkshar/)  
+
+---
+
+## **Issues**
+
+If you encounter any problems or bugs, please create an issue on GitHub. Examples of issues include:
+
+- OCR does not extract text correctly for certain scripts (e.g., Bengali, malayalam etc..).
+- Long sentences are not transliterated properly for some scripts.
+- Text-to-speech pronunciation is inaccurate for english.
+- UI/UX issues or bugs with camera functionality.
+
+When reporting an issue, please provide:
+1. Language/script used.
+2. Sample text or image if possible.
+3. Steps to reproduce the issue.
+4. Expected vs actual behavior.
 
 ---
 
 ## **Contributing**
 
-Contributions are welcome! To contribute:
+We welcome contributions from the community! 🙌
 
+Ways you can contribute:
+
+1. **Improve OCR accuracy**
+   - Fix issues with incorrect text extraction for languages like Bengali etc.. or long sentences.
+
+2. **Enhance transliteration**
+   - Ensure accurate transliteration for all supported scripts.
+
+3. **Improve text-to-speech**
+   - Work on pronunciation improvements for different languages.
+
+4. **Fix bugs or add features**
+   - Camera functionality, UI enhancements, or new script support.
+
+**Steps to contribute:**
 1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature-name`.
-3. Commit your changes: `git commit -m "Add feature"`.
-4. Push to the branch: `git push origin feature-name`.
-5. Create a pull request.
+2. Create a branch: `git checkout -b feature/your-feature-name`.
+3. Make your changes and commit: `git commit -m "Describe your change"`.
+4. Push to your branch: `git push origin feature/your-feature-name`.
+5. Open a Pull Request describing your changes.
 
 ---
+
+Contributions are welcome! To contribute, please read our detailed [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+
 
 ## **License**
 
